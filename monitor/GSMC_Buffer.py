@@ -148,7 +148,7 @@ def main():
         idir+=1
     global project_dir
     project_dir = 'project_'+str(idir)+'/'
-    os.mkdirs(project_dir+'fetch_data/')
+    os.makedirs(project_dir+'fetch_data/')
     #### dir done
 
     with open(project_dir+"time_current.dat", 'w') as infile:
