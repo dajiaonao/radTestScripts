@@ -17,13 +17,19 @@ SMU_port = 5025                                 #host tcp port number
 
 Key_hostname = '192.168.2.4'                    #keysight oscilloscope ip address
 Key_port = 5025                                 #host tcp port number
- 
+
+
+#/////////////////
+project_dir='project_test/'
+
+#////////////////
+
 #Rig_hostname = '192.168.2.5'                    #rigol dds ip address
 #Rig_port = 5555                                 #rigol dds instrument port
 #-------------------------------------------------------------------#
 ## save current time and ouput current
 def save_time_curr():
-    with open("./time_current.dat", 'a') as infile:
+    with open(project_dir+"time_current.dat", 'a') as infile:
         ts = time.strftime('%Y-%m-%d_%H:%M:%S', time.localtime(time.time())) #acquire cuurent date and time
         print ts
         s1.send(":READ?\n")                                     #read current of the output
@@ -125,7 +131,7 @@ def timeFun(sched_Timer, time_slot):
         if now.hour==sched_Timer.hour and now.minute==sched_Timer.minute and now.second==sched_Timer.second and flag==0:
             run_task()                              #run task one
             time_str = save_time_curr()             #save time and current
-            filename = "./fetch_data/" + time_str + ".dat"
+            filename = project_dir+"fetch_data/" + time_str + ".dat"
             fetch_data(filename)
             flag = 1                                #set flag
         else:
@@ -135,7 +141,17 @@ def timeFun(sched_Timer, time_slot):
 #-------------------------------------------------------------------#
 ## main function: used to test the resistor of the load
 def main():
-    with open("./time_current.dat", 'w') as infile:
+
+    ### get a new project dir
+    idir = 0
+    while os.path.exists('project_'+str(idir)):
+        idir+=1
+    global project_dir
+    project_dir = 'project_'+str(idir)+'/'
+    os.mkdirs(project_dir+'fetch_data/')
+    #### dir done
+
+    with open(project_dir+"time_current.dat", 'w') as infile:
         infile.truncate()
         s1.send("*IDN?\n")                                      #command terminated with '\n'
         print "Keithley instrument ID: %s"%s1.recv(50)
