@@ -33,9 +33,11 @@ def link_files(pattern, n, ref=None, start=None):
     if ref is not None and ref not in flist:
         flist.append(ref)
 
+    dir1 = '_links/'
+    if not os.path.exists(dir1): os.makedirs(dir1)
     ### create the links for the selected files
     for i,f in enumerate(flist):
-        force_link(f,'sample_link_'+str(i))
+        force_link(f,dir1+'sample_'+str(i))
 
 def run_main():
     pattern = '/data/Samples/719/GSMC_script/Morning/period3/2018-03-10_*.dat'

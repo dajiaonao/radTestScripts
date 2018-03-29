@@ -20,6 +20,7 @@ Key_port = 5025                                 #host tcp port number
 
 
 #/////////////////
+sampleDir = './'
 project_dir='project_test/'
 
 #////////////////
@@ -147,7 +148,7 @@ def main():
     while os.path.exists('project_'+str(idir)):
         idir+=1
     global project_dir
-    project_dir = 'project_'+str(idir)+'/'
+    project_dir = sampleDir+'project_'+str(idir)+'/'
     os.makedirs(project_dir+'fetch_data/')
     #### dir done
 
