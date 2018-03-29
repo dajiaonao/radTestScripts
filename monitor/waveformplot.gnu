@@ -19,5 +19,5 @@ plot 'sample_link_0' using 1:2 w l ls 2,\
      'sample_link_4' using 1:2 w l ls 11
 
 pause 10
-system('./get_files.py')
+system('./link_files.py')
 reread
