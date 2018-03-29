@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 import sys, glob, os
-print "test"
 
-pattern = ''
-ref = None
-N = 5
-
+isDebug = False
 
 def force_link(target, des):
     '''if des is linked to target, do nothing, otherwise delete the des and link the target to des'''
@@ -14,26 +10,14 @@ def force_link(target, des):
             if os.path.realpath(des) == target:
                 return
             else:
-                print "Deleting", des
+                if isDebug: print "Deleting", des
                 os.remove(des)
-#                 delete des
         else:
             print 'File', des, 'already exist. Remove or rename it before running this program...'
             sys.exit(1)
-#             raise exception
     #link it here
-    print "will link", target, 'to', des
+    if isDebug: print "will link", target, 'to', des
     os.symlink(target, des)
-
-class doMonitor:
-    '''Get the links and launch the monitor script'''
-    def __init__(self):
-        pass
-    def start(self):
-        ### get the files
-        ### make the links
-        ### run the monitor is it's not done yet
-        pass
 
 def link_files(pattern, n, ref=None, start=None):
     if start is None:
@@ -41,19 +25,15 @@ def link_files(pattern, n, ref=None, start=None):
     else:
         t0 = os.path.getctime(start)
         fs = [x for x in glob.glob(pattern) if os.path.getctime(x)>t0] 
-#     print fs
     fs_sorted = sorted(fs, key=lambda x:os.path.getctime(x))
-#     print fs_sorted
+
     N = len(fs_sorted)
-
-#     print N
     flist = [fs_sorted[int((1-1./(2**i))*N)] for i in range(n-1)]+[fs_sorted[-2]]
-#     print flist
-#     print [int((1-1./(2**i))*N) for i in range(n-1)]
 
-#     for i in range(5):
-#         print os.path.getctime(fs[i])
-       
+    if ref is not None and ref not in flist:
+        flist.append(ref)
+
+    ### create the links for the selected files
     for i,f in enumerate(flist):
         force_link(f,'sample_link_'+str(i))
 
