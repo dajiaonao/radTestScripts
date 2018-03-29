@@ -5,9 +5,10 @@ isDebug = False
 
 def force_link(target, des):
     '''if des is linked to target, do nothing, otherwise delete the des and link the target to des'''
-    if os.path.exists(des):
+    if os.path.lexists(des):
         if os.path.islink(des):
             if os.path.realpath(des) == target:
+                print os.path.realpath(des), target
                 return
             else:
                 if isDebug: print "Deleting", des
@@ -17,7 +18,7 @@ def force_link(target, des):
             sys.exit(1)
     #link it here
     if isDebug: print "will link", target, 'to', des
-    os.symlink(target, des)
+    os.symlink(os.path.abspath(target), des)
 
 def link_files(pattern, n, ref=None, start=None):
     if start is None:
@@ -40,9 +41,9 @@ def link_files(pattern, n, ref=None, start=None):
         force_link(f,dir1+'sample_'+str(i))
 
 def run_main():
-    pattern = '/data/Samples/719/GSMC_script/Morning/period3/2018-03-10_*.dat'
+    pattern = 'project_2/fetch_data/*.dat'
     nP = 5 if len(sys.argv)<2 else int(sys.argv[1])
-    link_files(pattern, nP, None, '/data/Samples/719/GSMC_script/Morning/period3/2018-03-10_14_17_48.dat')
+    link_files(pattern, nP, None, None)
 
 if __name__ == '__main__':
     run_main()
