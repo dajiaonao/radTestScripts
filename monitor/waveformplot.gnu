@@ -12,7 +12,9 @@ set style line 11 lc rgb '#ad3100' lt 1 lw 1.5 #      .
 set style line 12 lc rgb '#ad1400' lt 1 lw 1.5 #      .
 set style line 13 lc rgb '#ad0009' lt 1 lw 1.5 # --- green
 
-system('./link_files.py')
+if (!exists("projname")) projname='project_0/'
+
+system('./link_files.py '.projname)
 plot '_links/sample_0' using 1:2 w l ls 2,\
      '_links/sample_1' using 1:2 w l ls 4,\
      '_links/sample_2' using 1:2 w l ls 6,\

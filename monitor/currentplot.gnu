@@ -4,6 +4,9 @@
 #if (GPVAL_DATA_X_MAX > 100) set xrange[GPVAL_DATA_X_MAX-100:GPVAL_DATA_X_MAX]; 
 set xdata time
 set timefmt x "%Y-%m-%d_%H:%M:%S"
-plot "project_2/time_current.dat" using 1:2 with lines
+if (!exists("projname")) projname='project_0/'
+#print projname
+#set output projname.'test.eps'
+plot projname."time_current.dat" using 1:2 with lines
 pause 10
 reread

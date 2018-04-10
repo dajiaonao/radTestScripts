@@ -41,8 +41,11 @@ def link_files(pattern, n, ref=None, start=None):
         force_link(f,dir1+'sample_'+str(i))
 
 def run_main():
-    pattern = 'project_2/fetch_data/*.dat'
-    nP = 5 if len(sys.argv)<2 else int(sys.argv[1])
+    projname = 'project_0/' if len(sys.argv)<2 else sys.argv[1]
+    if projname[-1] != '/': projname += '/'
+    pattern = projname+'fetch_data/*.dat'
+    print pattern
+    nP = 5 if len(sys.argv)<3 else int(sys.argv[2])
     link_files(pattern, nP, None, None)
 
 if __name__ == '__main__':

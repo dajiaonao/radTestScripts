@@ -7,6 +7,7 @@ import socket
 import datetime
 import threading
 import numpy as np
+import subprocess
 '''
 @author: WeiZhang
 @date: 2018-01-12
@@ -156,8 +157,8 @@ def main():
         infile.truncate()
         s1.send("*IDN?\n")                                      #command terminated with '\n'
         print "Keithley instrument ID: %s"%s1.recv(50)
-        s1.send("*RST\n")                                       #command terminated with '\n'
-        s1.send("SENS:CURR:RANG 1000E-3\n")                     #set the current range 10mA
+#         s1.send("*RST\n")                                       #command terminated with '\n'
+#         s1.send("SENS:CURR:RANG 1000E-3\n")                     #set the current range 10mA
         s1.send("DISP:DIG 6\n")                                 #display digital the max is 6
         s1.send("OUTP ON\n")                                    #open output
 
@@ -173,8 +174,15 @@ def main():
         timeFun(sched_Timer, time_slot)
         print "OK!"
 #-------------------------------------------------------------------#
-## if statement
-if __name__ == "__main__":
+def monitor(proj):
+    '''To monitor the plots, not working yet'''
+#     p1 = subprocess.Popen(['gnuplot','-e "projname=\''+proj+'\'"', 'currentplot.gnu'])
+    p2 = subprocess.Popen(['/usr/bin/gnuplot -e "projname=\''+proj+'\'" currentplot.gnu'])
+#     p2 = subprocess.Popen(['gnuplot','-e "projname=\''+proj+'\'"', 'waveformplot.gnu'])
+
+#     print p1.pid, p2.pid
+
+def take_data():
     s1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)      #init local socket handle
     s1.connect((SMU_hostname, SMU_port))                        #connect to the instrument 
 
@@ -190,3 +198,9 @@ if __name__ == "__main__":
     s2.close()                                                  #close socket
     #s3.close()                                                  #close socket
  
+
+## if statement
+if __name__ == "__main__":
+#     take_data()
+    monitor('test1/')
+
